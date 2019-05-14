@@ -7,11 +7,11 @@
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
-        "serve": "NODE_ENV=development firebase serve",
+        "serve": "NODE_ENV=development firebase serve",c
         "clean": "rimraf public/* && rimraf public/*.*",
         "deploy": "firebase deploy",
         "predeploy": "npm run build",
-        "copystatic": "cp -R src/dist/ public"
+        "copystatic": "cp -R dist/ public"
     },
     "dependencies": {
         "axios": "^0.18.0",
