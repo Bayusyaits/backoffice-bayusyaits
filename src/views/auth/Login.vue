@@ -4,7 +4,7 @@
       <h4 class="card-title mt-3 text-center">Login</h4>
       <div class="alert alert-success" role="alert"
       v-if="output && output.code == 200 && output.data">
-        <h5 v-html="'You logged in as ' + output.data.name"></h5>
+        <h5 class="text-white mb-0" v-html="'You logged in as ' + output.data.name"></h5>
       </div>
       <div class="alert alert-info" v-if="loading">
         <h5 class="text-white mb-0">Loading!!!</h5>
@@ -73,7 +73,7 @@ export default {
             scope: 'login',
             form_params: {
               u_username: this.u_username,
-              u_password: this.u_password
+              u_password: this.u_password,
             },
             body: {
               operation: 'Get user',
