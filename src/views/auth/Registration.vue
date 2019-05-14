@@ -46,12 +46,12 @@
         </div> <!-- form-group// -->
 
         <div class="form-group input-group">
-          <label class="form-label" for="month">Date of birth</label>          
+          <label class="form-label" for="month">Date of birth</label>
         </div>
         <div class="form-group input-group">
           <div class="form-check-inline">
           <select class="custom-select" v-validate="'required'"
-          style="max-width: 120px;" data-vv-as="selected" 
+          style="max-width: 120px;" data-vv-as="selected"
           id="month" v-model="u_dob.month"
           name="month"
           :class="{'is-invalid': errors.has('month')}">
@@ -176,7 +176,7 @@
                   <option value="1943">1943</option>
                   <option value="1942">1942</option>
                   <option value="1941">1941</option>
-                  <option value="1940">1940</option>  
+                  <option value="1940">1940</option>
             </select>
           </div>
         </div>
@@ -212,7 +212,9 @@
             class="btn btn-primary btn-block"
             :class="{'disabled' : loading}"> Register </button>
         </div> <!-- form-group// -->
-        <p class="text-center">Have an account? <router-link to="/login">Log In</router-link> </p>
+        <p class="text-center">
+          Have an account? <router-link to="/login">Log In</router-link>
+        </p>
     </form>
     </article>
   </d-container>

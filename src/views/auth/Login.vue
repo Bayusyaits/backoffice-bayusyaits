@@ -2,8 +2,9 @@
   <d-container fluid class="main-content-container px-4">
     <article class="card-body mx-auto" style="max-width: 400px;">
       <h4 class="card-title mt-3 text-center">Login</h4>
-      <div class="alert alert-success" role="alert" v-if="output && output.code == 200">
-        <h5 v-html="output.message"></h5>
+      <div class="alert alert-success" role="alert"
+      v-if="output && output.code == 200 && output.data">
+        <h5 v-html="'You logged in as ' + output.data.name"></h5>
       </div>
       <div class="alert alert-info" v-if="loading">
         <h5 class="text-white mb-0">Loading!!!</h5>
@@ -26,7 +27,7 @@
             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
         </div>
             <input class="form-control" placeholder="Password"
-            v-validate="'required|password'"
+            v-validate="'required'"
             name="password"
             :class="{'is-invalid': errors.has('password')}"
             type="password" v-model="u_password">
@@ -36,8 +37,7 @@
             class="btn btn-primary btn-block"
             :class="{'disabled' : loading}"> Login </button>
         </div> <!-- form-group// -->
-        <p class="text-center">Don't have an account? 
-          <router-link to="/registration">Register</router-link> 
+        <p class="text-center">Don't have an account? <router-link to="/registration">Register</router-link>
         </p>
     </form>
     </article>
@@ -73,7 +73,7 @@ export default {
             scope: 'login',
             form_params: {
               u_username: this.u_username,
-              u_password: this.u_password,
+              u_password: this.u_password
             },
             body: {
               operation: 'Get user',
@@ -83,6 +83,9 @@ export default {
             .then((response) => {
               currentObj.output = response.data;
               this.loading = false;
+              setTimeout(() => {
+                this.loading = false;
+              }, 3000);
             })
             .catch((error) => {
               currentObj.output = error;
