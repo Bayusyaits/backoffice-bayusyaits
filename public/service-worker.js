@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.c499d41d7f6fcbaa27f5b24ab6f8345a.js"
+  "/precache-manifest.f1d7d91d7b412760f7a7b5f7841c8460.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "backoffice-bayusyaits"});

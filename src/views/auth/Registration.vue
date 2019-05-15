@@ -1,44 +1,47 @@
 <template>
   <d-container fluid class="main-content-container px-4">
     <article class="card-body mx-auto" style="max-width: 400px;">
-      <h4 class="card-title mt-3 text-center">Registration</h4>
+      <h4 class="card-title mt-3 text-left">Registration</h4>
       <div class="alert alert-success" role="alert" v-if="output && output.code == 200">
         <h5 v-html="output.message"></h5>
       </div>
-      <div class="alert alert-info" v-if="loading">
+      <div class="alert alert-danger" role="alert" v-if="errored">
+        <h5 class="text-white mb-0">Please enter valid data!</h5>
+      </div>
+      <div class="alert alert-info" v-if="loading && !output.code">
         <h5 class="text-white mb-0">Loading!!!</h5>
       </div>
-      <div class="alert alert-danger" role="alert" v-if="errored">
-        <h5 class="text-white mb-0">Please, Check your input data!</h5>
-      </div>
       <form>
-      <div class="form-group input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-        </div>
-            <input v-validate="'required|alpha'" v-model="u_firstname"
-             class="form-control" placeholder="Full name" type="text"
-             name="firstname"
-             :class="{'is-invalid': errors.has('firstname')}">
-      </div> <!-- form-group// -->
-      <div class="form-group input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-        </div>
-            <input v-validate="'required|alpha'" v-model="u_lastname"
-            class="form-control" placeholder="Last name" type="text"
-            name="lastname"
-            :class="{'is-invalid': errors.has('lastname')}">
+        <div class="form-group input-group">
+          <div class="invalid-input" v-if="errors.has('firstname')">
+            <span class="invalid-text">Please enter valid firstname</span>
+            <div class="invalid-triangle_down"></div>
+          </div>
+          <input v-validate="'required|alpha'" v-model="u_firstname"
+            class="form-control" placeholder="Full name" type="text"
+            name="firstname"
+            :class="{'is-invalid': errors.has('firstname')}">
         </div> <!-- form-group// -->
         <div class="form-group input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
-        </div>
+          <div class="invalid-input" v-if="errors.has('lastname')">
+            <span class="invalid-text">Please enter valid lastname</span>
+            <div class="invalid-triangle_down"></div>
+          </div>
+          <input v-validate="'required|alpha'" v-model="u_lastname"
+          class="form-control" placeholder="Last name" type="text"
+          name="lastname"
+          :class="{'is-invalid': errors.has('lastname')}">
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
         <select class="custom-select" v-validate="'included:+621,+628'"
-        style="max-width: 120px;" data-vv-as="selected">
-            <option value="+621">+621</option>
+        style="max-width: 120px;" data-vv-as="selected_area" v-model="u_area_number">
             <option value="+628">+628</option>
+            <option value="+621">+621</option>
         </select>
+        <div class="invalid-input" v-if="errors.has('phone_number')">
+          <span class="invalid-text">Please enter valid indonesia phone number</span>
+          <div class="invalid-triangle_down"></div>
+        </div>
           <input v-validate="'required|numeric'" v-model="u_phone_number"
           class="form-control" placeholder="Phone number"
           name="phone_number"
@@ -71,6 +74,11 @@
           </select>
           </div>
           <div class="form-check-inline">
+            <div class="invalid-input" v-if="errors.has('month')
+             || errors.has('date') || errors.has('year')">
+              <span class="invalid-text">Please enter valid dates</span>
+              <div class="invalid-triangle_down"></div>
+            </div>
             <select v-validate="'required'"
             class="custom-select" data-vv-as="selected"
             id="date" v-model="u_dob.date"
@@ -198,27 +206,109 @@
           </div>
         </div>
         <div class="form-group input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-        </div>
-            <input v-validate="'required|email'"
+          <div class="invalid-input" v-if="errors.has('email')">
+              <span class="invalid-text">Please enter valid email</span>
+              <div class="invalid-triangle_down"></div>
+            </div>
+          <input v-validate="'required|email'"
             class="form-control" placeholder="Email" type="email"
             v-model.trim="u_username"
-            name="username"
-            :class="{'is-invalid': errors.has('username')}">
+            name="email"
+            :class="{'is-invalid': errors.has('email')}">
         </div> <!-- form-group// -->
         <div class="form-group">
-            <button @click="register" type="button"
-            class="btn btn-primary btn-block"
-            :class="{'disabled' : loading}"> Register </button>
+          <button @click="register" type="button"
+            class="btn btn-primary btn-block secondary-bg"
+            :class="{'disabled' : loading}"
+            :disabled="output.code === 200 || loading ? true : false">
+            Register </button>
         </div> <!-- form-group// -->
-        <p class="text-center">
-          Have an account? <router-link to="/login">Log In</router-link>
-        </p>
-    </form>
+      </form>
     </article>
+    <footer class="page-footer font-small unique-color-dark pt-4"
+    :class="[output && output.code == 200 ? 'bg-disabled' : 'bg-active']">
+
+      <!-- Footer Elements -->
+      <div class="container">
+
+        <!-- Call to action -->
+        <ul class="list-unstyled list-inline text-center py-2">
+          <li v-if="output && output.code == 200">
+            <router-link class="btn secondary-bg text-white btn-lg btn-block"
+             to="/login">Login</router-link>
+          </li>
+          <li class="list-inline-item" v-else>
+            <h3 class="text-white">Footer</h3>
+          </li>
+        </ul>
+        <!-- Call to action -->
+
+      </div>
+      <!-- Footer Elements -->
+
+    </footer>
   </d-container>
 </template>
+<style lang="scss" scoped>
+  .secondary-bg {
+    background-color: #aa66cc !important;
+    border-color: #aa66cc !important;
+    &:hover {
+      background-color: #8d46b1 !important;
+      border-color: #8d46b1 !important;
+    }
+  }
+
+  .secondary-color {
+    color: #aa66cc !important;
+    &:hover {
+      color: #8d46b1 !important;
+    }
+  }
+
+  .page-footer {
+    position: relative;
+    width: 100%;
+    float: left;
+    &.bg-active {
+          background-color: #aa66cc !important;
+    }
+    &.bg-disabled {
+          background-color: #d3a1ec !important;
+    }
+  }
+
+  .invalid-input {
+    position: absolute;
+    -webkit-transform: translate3d(119px, 61px, 0px);
+    transform: translate3d(119px, 61px, 0px);
+    top: 0px;
+    left: 0px;
+    will-change: transform;
+    margin: -100px -20px;
+    z-index: 10;
+    .invalid-text {
+      background-color: #cb2431;
+      display: inline-block;
+      padding: 3px 16px;
+      border: 0;
+      border-radius: 2px;
+      box-shadow: 0 0 0 1px rgba(139, 3, 0, .75), 0 1px 10px rgba(0, 0, 0, .35);
+      color: #fff;
+      font-size: 0.83em;
+    }
+
+    .invalid-triangle_down {
+      width: 0;
+      height: 0;
+      z-index: 11;
+      margin-left: 30%;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 10px solid #cb2431;
+    }
+  }
+</style>
 
 <script>
 // First Row of Posts
@@ -234,6 +324,8 @@ export default {
       u_username: '',
       u_gender: '',
       u_mrm: '',
+      u_area_number: '',
+      u_ip: '',
       u_dob: [
         {
           date: '',
@@ -241,12 +333,24 @@ export default {
           year: '',
         },
       ],
-      output: null,
+      output: [
+        {
+          data: '',
+          code: '',
+          message: '',
+        },
+      ],
       loading: false,
       errored: false,
     };
   },
   methods: {
+    getIp() {
+      $.getJSON('https://ipfind.co/me?auth=<your_api_key>', function (data) {
+        this.u_ip = JSON.stringify(data, null, 2);
+        console.log(this.u_ip);
+      });
+    },
     register(e) {
       this.$validator.validate().then((valid) => {
         this.loading = true;
@@ -262,12 +366,13 @@ export default {
             form_params: {
               u_firstname: this.u_firstname,
               u_lastname: this.u_lastname,
-              u_phone_number: this.u_phone_number,
+              u_phone_number: this.u_area_number + this.u_phone_number,
               u_username: this.u_username,
               u_gender: this.u_gender,
-              u_dob: this.u_dob.date + this.u_dob.month + this.u_dob.year,
+              u_dob: `${this.u_dob.year}-${this.u_dob.month}-${this.u_dob.date}`,
               u_password: 'Password8',
               u_mrm: '5550001',
+              u_ip: this.u_ip,
             },
             body: {
               operation: 'Add new user',
@@ -276,10 +381,21 @@ export default {
           })
             .then((response) => {
               currentObj.output = response.data;
-              setTimeout(() => {
+              if (currentObj.output.code === 200) {
+                setTimeout(() => {
+                  this.loading = false;
+                  // this.$router.push('/login');
+                }, 3000);
+              } else {
                 this.loading = false;
-                this.$router.push('/login');
-              }, 3000);
+                this.errored = true;
+                const clear = async () => {
+                  this.u_username = null;
+                };
+                clear().then(() => {
+                  this.$validator.reset();
+                });
+              }
             })
             .catch((error) => {
               currentObj.output = error;
