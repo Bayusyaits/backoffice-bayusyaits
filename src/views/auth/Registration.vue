@@ -2,7 +2,8 @@
   <d-container fluid class="main-content-container px-4">
     <article class="card-body mx-auto" style="max-width: 400px;">
       <h4 class="card-title mt-3 text-left">Registration</h4>
-      <div class="alert alert-success" role="alert" v-if="output && output.code == 200">
+      <div class="alert alert-success" role="alert"
+       v-if="output && output.code == 200">
         <h5 v-html="output.message"></h5>
       </div>
       <div class="alert alert-danger" role="alert" v-if="errored">

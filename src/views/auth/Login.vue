@@ -4,7 +4,8 @@
       <h4 class="card-title mt-3 text-left">Login</h4>
       <div class="alert alert-success" role="alert"
       v-if="output && output.code === 200 && output.data">
-        <h5 class="text-white mb-0" v-html="'You logged in as ' + output.data.name"></h5>
+        <h5 class="text-white mb-0"
+         v-html="'You logged in as ' + output.data.name"></h5>
       </div>
       <div class="alert alert-info" v-if="loading && !output.data">
         <h5 class="text-white mb-0">Loading!!!</h5>
